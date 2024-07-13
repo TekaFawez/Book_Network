@@ -19,10 +19,10 @@ import java.util.function.Function;
 
 
 public class JwtService {
-    @Value("${application.security.expiration}")
-    private  long  jwtExpiration;
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
+    @Value("${application.security.jwt.expiration}")
+    private long jwtExpiration;
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -40,12 +40,16 @@ public class JwtService {
                 .getBody();
     }
 
-    public String generateToken(UserDetails userDetails){
-        return generateToken(new HashMap<>(),userDetails);
-    }
-    public String generateToken(Map<String,Object> claims ,UserDetails userDetails){
-        return buildToken(claims,userDetails,jwtExpiration);
 
+    public String generateToken(UserDetails userDetails) {
+        return generateToken(new HashMap<>(), userDetails);
+    }
+
+    public String generateToken(
+            Map<String, Object> extraClaims,
+            UserDetails userDetails
+    ) {
+        return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 
     private String buildToken(Map<String, Object> extraClaims,
