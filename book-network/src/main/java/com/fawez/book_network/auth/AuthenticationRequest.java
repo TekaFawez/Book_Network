@@ -10,7 +10,7 @@ import lombok.Data;
 @Builder
 public class AuthenticationRequest {
     @NotBlank(message ="Email is mandatory" )
-    @Email
+    @Email(message = "Email is not Formatted")
     private String email;
     @NotBlank(message ="Password is mandatory" )
     @Size(min=8)

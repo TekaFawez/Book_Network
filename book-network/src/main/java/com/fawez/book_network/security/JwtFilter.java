@@ -37,9 +37,12 @@ public class JwtFilter extends OncePerRequestFilter {
         final String userEmail;
         if(authHeader==null|| !authHeader.startsWith("Bearer ")){
             filterChain.doFilter(request,response);
+
             return;
         }
-        jwt=authHeader.substring(7);
+     //   jwt=authHeader.substring(7);
+        jwt = authHeader.split(" ")[1].trim();
+
         userEmail= jwtService.extractUsername(jwt);
         if(userEmail!=null && SecurityContextHolder.getContext().getAuthentication()==null){
             UserDetails userDetails=userDetailsService.loadUserByUsername(userEmail);
