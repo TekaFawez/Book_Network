@@ -1,5 +1,6 @@
 package com.fawez.book_network.book;
 
+import com.fawez.book_network.file.FileUtils;
 import com.fawez.book_network.history.BookTransactionHistory;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class BookMapper {
                 .shareable(book.isShareable())
                 .archived(book.isArchived())
                 .owner(book.getOwner().fullName())
-                //To do :.cover()
+                .cover(FileUtils.readFileFromLocation(book.getBookCover()))
                 .build();
     }
 
