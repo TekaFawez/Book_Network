@@ -1,13 +1,12 @@
 package com.fawez.book_network.feedBack;
 
 import com.fawez.book_network.book.Book;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+
+import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
-@AllArgsConstructor
-@NoArgsConstructor
+@Service
 public class FeedbackMapper {
     public Feedback toFeedback(FeedbackRequest request) {
         return Feedback.builder()

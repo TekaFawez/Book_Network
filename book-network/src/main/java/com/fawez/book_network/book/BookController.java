@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/books")
 @RequiredArgsConstructor
 @Tag(name="book")
+@CrossOrigin
 public class BookController {
     public final BookService service;
 
