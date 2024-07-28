@@ -36,7 +36,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
 
     @Value("${application.mailing.frontend.activation-url}")
-    private String activationUrl;
+    private final String activationUrl="http://localhost:4200/activate-account";
     public void registerUser(RegistrationRequest request) throws MessagingException {
         var userRole=roleRepository.findByName("USER")
                 .orElseThrow(()->new IllegalStateException("Role USER was not initialized"));
