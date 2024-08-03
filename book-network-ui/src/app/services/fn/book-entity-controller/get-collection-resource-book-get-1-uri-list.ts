@@ -7,7 +7,7 @@ import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
 
-export interface GetCollectionResourceBookGet11$UriList$Params {
+export interface GetCollectionResourceBookGet1$UriList$Params {
 
 /**
  * Zero-based page index (0..N)
@@ -25,8 +25,8 @@ export interface GetCollectionResourceBookGet11$UriList$Params {
   sort?: Array<string>;
 }
 
-export function getCollectionResourceBookGet11$UriList(http: HttpClient, rootUrl: string, params?: GetCollectionResourceBookGet11$UriList$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
-  const rb = new RequestBuilder(rootUrl, getCollectionResourceBookGet11$UriList.PATH, 'get');
+export function getCollectionResourceBookGet1$UriList(http: HttpClient, rootUrl: string, params?: GetCollectionResourceBookGet1$UriList$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  const rb = new RequestBuilder(rootUrl, getCollectionResourceBookGet1$UriList.PATH, 'get');
   if (params) {
     rb.query('page', params.page, {});
     rb.query('size', params.size, {});
@@ -43,4 +43,4 @@ export function getCollectionResourceBookGet11$UriList(http: HttpClient, rootUrl
   );
 }
 
-getCollectionResourceBookGet11$UriList.PATH = '/books';
+getCollectionResourceBookGet1$UriList.PATH = '/books';

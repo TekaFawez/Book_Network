@@ -7,8 +7,8 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 import { BookTransactionHistoryEntityControllerService } from './services/book-transaction-history-entity-controller.service';
 import { BookTransactionHistorySearchControllerService } from './services/book-transaction-history-search-controller.service';
 import { BookTransactionHistoryPropertyReferenceControllerService } from './services/book-transaction-history-property-reference-controller.service';
-import { BookService } from './services/book.service';
 import { BookEntityControllerService } from './services/book-entity-controller.service';
+import { BookService } from './services/book.service';
 import { BookSearchControllerService } from './services/book-search-controller.service';
 import { BookPropertyReferenceControllerService } from './services/book-property-reference-controller.service';
 import { FeedbackEntityControllerService } from './services/feedback-entity-controller.service';
@@ -37,8 +37,8 @@ import { AuthenticationService } from './services/authentication.service';
     BookTransactionHistoryEntityControllerService,
     BookTransactionHistorySearchControllerService,
     BookTransactionHistoryPropertyReferenceControllerService,
-    BookService,
     BookEntityControllerService,
+    BookService,
     BookSearchControllerService,
     BookPropertyReferenceControllerService,
     FeedbackEntityControllerService,

@@ -759,9 +759,9 @@
     },
     "/books": {
       "get": {
-        "tags": ["book", "book-entity-controller"],
+        "tags": ["book-entity-controller"],
         "description": "get-book",
-        "operationId": "getCollectionResource-book-get_1_1",
+        "operationId": "getCollectionResource-book-get_1",
         "parameters": [
           {
             "name": "page",
@@ -791,10 +791,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "oneOf": [
-                    { "$ref": "#/components/schemas/PageResponseBookResponse" },
-                    { "$ref": "#/components/schemas/PagedModelEntityModelBook" }
-                  ]
+                  "$ref": "#/components/schemas/PagedModelEntityModelBook"
                 }
               },
               "application/x-spring-data-compact+json": {
@@ -809,6 +806,7 @@
       },
       "post": {
         "tags": ["book", "book-entity-controller"],
+        "summary": "Save a book",
         "description": "create-book",
         "operationId": "postCollectionResource-book-post_1",
         "requestBody": {
@@ -3785,6 +3783,38 @@
         }
       }
     },
+    "/books/findAllBooks": {
+      "get": {
+        "tags": ["book"],
+        "operationId": "findAllBooks",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 0 }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponseBookResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/books/borrowed": {
       "get": {
         "tags": ["book"],
@@ -3893,6 +3923,41 @@
         "type": "object",
         "properties": { "authority": { "type": "string" } }
       },
+      "EntityModelToken": {
+        "type": "object",
+        "properties": {
+          "token": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "expiredAt": { "type": "string", "format": "date-time" },
+          "validatedAt": { "type": "string", "format": "date-time" },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "PageMetadata": {
+        "type": "object",
+        "properties": {
+          "size": { "type": "integer", "format": "int64" },
+          "totalElements": { "type": "integer", "format": "int64" },
+          "totalPages": { "type": "integer", "format": "int64" },
+          "number": { "type": "integer", "format": "int64" }
+        }
+      },
+      "PagedModelEntityModelToken": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "tokens": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/EntityModelToken" }
+              }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
       "EntityModelUser": {
         "type": "object",
         "properties": {
@@ -3906,53 +3971,13 @@
           "createdDate": { "type": "string", "format": "date-time" },
           "lastModifiedDate": { "type": "string", "format": "date-time" },
           "name": { "type": "string" },
-          "username": { "type": "string" },
+          "accountNonLocked": { "type": "boolean" },
           "accountNonExpired": { "type": "boolean" },
           "credentialsNonExpired": { "type": "boolean" },
-          "accountNonLocked": { "type": "boolean" },
+          "username": { "type": "string" },
           "authorities": {
             "type": "array",
             "items": { "$ref": "#/components/schemas/GrantedAuthority" }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "PageMetadata": {
-        "type": "object",
-        "properties": {
-          "size": { "type": "integer", "format": "int64" },
-          "totalElements": { "type": "integer", "format": "int64" },
-          "totalPages": { "type": "integer", "format": "int64" },
-          "number": { "type": "integer", "format": "int64" }
-        }
-      },
-      "PagedModelEntityModelUser": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "users": {
-                "type": "array",
-                "items": { "$ref": "#/components/schemas/EntityModelUser" }
-              }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" },
-          "page": { "$ref": "#/components/schemas/PageMetadata" }
-        }
-      },
-      "CollectionModelRole": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "roles": {
-                "type": "array",
-                "items": { "$ref": "#/components/schemas/RoleResponse" }
-              }
-            }
           },
           "_links": { "$ref": "#/components/schemas/Links" }
         }
@@ -3967,6 +3992,40 @@
             }
           },
           "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "EntityModelBook": {
+        "type": "object",
+        "properties": {
+          "createdDate": { "type": "string", "format": "date-time" },
+          "lastModifiedDate": { "type": "string", "format": "date-time" },
+          "createdBy": { "type": "integer", "format": "int32" },
+          "lastModifiedBy": { "type": "integer", "format": "int32" },
+          "title": { "type": "string" },
+          "authorName": { "type": "string" },
+          "isbn": { "type": "string" },
+          "synopsis": { "type": "string" },
+          "bookCover": { "type": "string" },
+          "archived": { "type": "boolean" },
+          "shareable": { "type": "boolean" },
+          "rate": { "type": "number", "format": "double" },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "PagedModelEntityModelBook": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "books": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/EntityModelBook" }
+              }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
         }
       },
       "CollectionModelBookTransactionHistory": {
@@ -3986,15 +4045,15 @@
           "_links": { "$ref": "#/components/schemas/Links" }
         }
       },
-      "CollectionModelBook": {
+      "CollectionModelFeedback": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "books": {
+              "feedbacks": {
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/BookResponse" }
+                "items": { "$ref": "#/components/schemas/FeedbackResponse" }
               }
             }
           },
@@ -4031,42 +4090,15 @@
           "page": { "$ref": "#/components/schemas/PageMetadata" }
         }
       },
-      "EntityModelBook": {
-        "type": "object",
-        "properties": {
-          "createdDate": { "type": "string", "format": "date-time" },
-          "lastModifiedDate": { "type": "string", "format": "date-time" },
-          "createdBy": { "type": "integer", "format": "int32" },
-          "lastModifiedBy": { "type": "integer", "format": "int32" },
-          "title": { "type": "string" },
-          "authorName": { "type": "string" },
-          "isbn": { "type": "string" },
-          "synopsis": { "type": "string" },
-          "bookCover": { "type": "string" },
-          "archived": { "type": "boolean" },
-          "shareable": { "type": "boolean" },
-          "rate": { "type": "number", "format": "double" },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "EntityModelRole": {
-        "type": "object",
-        "properties": {
-          "name": { "type": "string" },
-          "createdDate": { "type": "string", "format": "date-time" },
-          "lastModifiedDate": { "type": "string", "format": "date-time" },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "PagedModelEntityModelRole": {
+      "PagedModelEntityModelUser": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "roles": {
+              "users": {
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/EntityModelRole" }
+                "items": { "$ref": "#/components/schemas/EntityModelUser" }
               }
             }
           },
@@ -4074,7 +4106,7 @@
           "page": { "$ref": "#/components/schemas/PageMetadata" }
         }
       },
-      "PagedModelEntityModelBook": {
+      "CollectionModelBook": {
         "type": "object",
         "properties": {
           "_embedded": {
@@ -4082,53 +4114,26 @@
             "properties": {
               "books": {
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/EntityModelBook" }
-              }
-            }
-          },
-          "_links": { "$ref": "#/components/schemas/Links" },
-          "page": { "$ref": "#/components/schemas/PageMetadata" }
-        }
-      },
-      "CollectionModelFeedback": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "feedbacks": {
-                "type": "array",
-                "items": { "$ref": "#/components/schemas/FeedbackResponse" }
+                "items": { "$ref": "#/components/schemas/BookResponse" }
               }
             }
           },
           "_links": { "$ref": "#/components/schemas/Links" }
         }
       },
-      "EntityModelToken": {
-        "type": "object",
-        "properties": {
-          "token": { "type": "string" },
-          "createdAt": { "type": "string", "format": "date-time" },
-          "expiredAt": { "type": "string", "format": "date-time" },
-          "validatedAt": { "type": "string", "format": "date-time" },
-          "_links": { "$ref": "#/components/schemas/Links" }
-        }
-      },
-      "PagedModelEntityModelToken": {
+      "CollectionModelRole": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "tokens": {
+              "roles": {
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/EntityModelToken" }
+                "items": { "$ref": "#/components/schemas/RoleResponse" }
               }
             }
           },
-          "_links": { "$ref": "#/components/schemas/Links" },
-          "page": { "$ref": "#/components/schemas/PageMetadata" }
+          "_links": { "$ref": "#/components/schemas/Links" }
         }
       },
       "EntityModelFeedback": {
@@ -4152,6 +4157,31 @@
               "feedbacks": {
                 "type": "array",
                 "items": { "$ref": "#/components/schemas/EntityModelFeedback" }
+              }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
+      "EntityModelRole": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "createdDate": { "type": "string", "format": "date-time" },
+          "lastModifiedDate": { "type": "string", "format": "date-time" },
+          "_links": { "$ref": "#/components/schemas/Links" }
+        }
+      },
+      "PagedModelEntityModelRole": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "roles": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/EntityModelRole" }
               }
             }
           },
@@ -4233,10 +4263,10 @@
           "createdDate": { "type": "string", "format": "date-time" },
           "lastModifiedDate": { "type": "string", "format": "date-time" },
           "name": { "type": "string" },
-          "username": { "type": "string" },
+          "accountNonLocked": { "type": "boolean" },
           "accountNonExpired": { "type": "boolean" },
           "credentialsNonExpired": { "type": "boolean" },
-          "accountNonLocked": { "type": "boolean" },
+          "username": { "type": "string" },
           "authorities": {
             "type": "array",
             "items": { "$ref": "#/components/schemas/GrantedAuthority" }
@@ -4372,21 +4402,6 @@
           "last": { "type": "boolean" }
         }
       },
-      "PageResponseBookResponse": {
-        "type": "object",
-        "properties": {
-          "content": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/BookResponse" }
-          },
-          "page": { "type": "integer", "format": "int32" },
-          "size": { "type": "integer", "format": "int32" },
-          "totalElements": { "type": "integer", "format": "int64" },
-          "totalPages": { "type": "integer", "format": "int32" },
-          "first": { "type": "boolean" },
-          "last": { "type": "boolean" }
-        }
-      },
       "BorrowedBookResponse": {
         "type": "object",
         "properties": {
@@ -4405,6 +4420,21 @@
           "content": {
             "type": "array",
             "items": { "$ref": "#/components/schemas/BorrowedBookResponse" }
+          },
+          "page": { "type": "integer", "format": "int32" },
+          "size": { "type": "integer", "format": "int32" },
+          "totalElements": { "type": "integer", "format": "int64" },
+          "totalPages": { "type": "integer", "format": "int32" },
+          "first": { "type": "boolean" },
+          "last": { "type": "boolean" }
+        }
+      },
+      "PageResponseBookResponse": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/BookResponse" }
           },
           "page": { "type": "integer", "format": "int32" },
           "size": { "type": "integer", "format": "int32" },

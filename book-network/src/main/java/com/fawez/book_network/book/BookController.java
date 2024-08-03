@@ -1,4 +1,5 @@
 package com.fawez.book_network.book;
+import io.swagger.v3.oas.annotations.Operation;
 
 import com.fawez.book_network.common.PageResponse;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 @CrossOrigin
 public class BookController {
     public final BookService service;
-
+    @Operation(summary = "Save a book")
     @PostMapping
     public ResponseEntity<Integer> saveBook(
             @Valid @RequestBody BookRequest request,
@@ -31,7 +32,7 @@ public class BookController {
     ) {
         return ResponseEntity.ok(service.findById(bookId));
     }
-    @GetMapping
+    @GetMapping("/findAllBooks")
     public ResponseEntity<PageResponse<BookResponse>> findAllBooks(
             @RequestParam(name = "page", defaultValue = "0",required = false) int page,
             @RequestParam(name = "size", defaultValue = "10",required = false) int size,

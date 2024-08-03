@@ -8,7 +8,7 @@ import { RequestBuilder } from '../../request-builder';
 
 import { PagedModelEntityModelBook } from '../../models/paged-model-entity-model-book';
 
-export interface GetCollectionResourceBookGet11$Json$Params {
+export interface GetCollectionResourceBookGet1$Json$Params {
 
 /**
  * Zero-based page index (0..N)
@@ -26,8 +26,8 @@ export interface GetCollectionResourceBookGet11$Json$Params {
   sort?: Array<string>;
 }
 
-export function getCollectionResourceBookGet11$Json(http: HttpClient, rootUrl: string, params?: GetCollectionResourceBookGet11$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<PagedModelEntityModelBook>> {
-  const rb = new RequestBuilder(rootUrl, getCollectionResourceBookGet11$Json.PATH, 'get');
+export function getCollectionResourceBookGet1$Json(http: HttpClient, rootUrl: string, params?: GetCollectionResourceBookGet1$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<PagedModelEntityModelBook>> {
+  const rb = new RequestBuilder(rootUrl, getCollectionResourceBookGet1$Json.PATH, 'get');
   if (params) {
     rb.query('page', params.page, {});
     rb.query('size', params.size, {});
@@ -44,4 +44,4 @@ export function getCollectionResourceBookGet11$Json(http: HttpClient, rootUrl: s
   );
 }
 
-getCollectionResourceBookGet11$Json.PATH = '/books';
+getCollectionResourceBookGet1$Json.PATH = '/books';
