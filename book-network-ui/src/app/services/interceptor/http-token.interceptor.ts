@@ -30,13 +30,14 @@ export const HttpTokenInterceptor: HttpInterceptorFn = (req, next) => {
 
   const authToken = tokenService.token
 
-  // Clone the request and add the authorization header
   const authReq = req.clone({
     setHeaders: {
       Authorization: `Bearer ${authToken}`
     }
   });
-
-  // Pass the cloned request with the updated header to the next handler
+  // headers: new HttpHeaders({
+  //             Authorization: `Bearer ${authToken}`
+  //           })
+  //         });
   return next(authReq);
 };

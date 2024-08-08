@@ -3,12 +3,10 @@
 export interface BookResponse {
   archived?: boolean;
   authorName?: string;
-  bookCover?: string;
-  createdBy?: number;
-  createdDate?: string;
+  cover?: Array<string>;
+  id?: number;
   isbn?: string;
-  lastModifiedBy?: number;
-  lastModifiedDate?: string;
+  owner?: string;
   rate?: number;
   shareable?: boolean;
   synopsis?: string;

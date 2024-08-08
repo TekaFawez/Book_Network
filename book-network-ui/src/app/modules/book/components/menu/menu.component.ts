@@ -11,16 +11,21 @@ import { Router, RouterLink } from '@angular/router';
 export class MenuComponent implements OnInit {
   constructor(){}
   ngOnInit(): void {
-    const linkColor=document.querySelectorAll('.nav-link');
-    linkColor.forEach(link=>{
-      if(window.location.href.endsWith(link.getAttribute('href')||'')){
-        link.classList.add('active');
-      }
-      link.addEventListener('click',()=>{
-        linkColor.forEach(l=>l.classList.remove('active'));
-        link.classList.add('active')
-      })
-    })
+    
+    if (typeof document !== 'undefined') {
+      const linkColor=document.querySelectorAll('.nav-link');  
+      linkColor.forEach(link=>{
+        if(window.location.href.endsWith(link.getAttribute('href')||'')){
+          link.classList.add('active');
+        }
+        link.addEventListener('click',()=>{
+          linkColor.forEach(l=>l.classList.remove('active'));
+          link.classList.add('active')
+        })
+      })    
+      // Manipulating the DOM here
+   }
+    
     
   }
 logout() {

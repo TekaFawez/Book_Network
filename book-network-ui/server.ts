@@ -4,9 +4,13 @@ import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import bootstrap from './src/main.server';
+import 'localstorage-polyfill'
+global['localStorage'] = localStorage;
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
+  global['localStorage'] = localStorage;
+
   const server = express();
   const serverDistFolder = dirname(fileURLToPath(import.meta.url));
   const browserDistFolder = resolve(serverDistFolder, '../browser');
@@ -51,6 +55,9 @@ function run(): void {
   server.listen(port, () => {
     console.log(`Node Express server listening on http://localhost:${port}`);
   });
+  global['localStorage'] = localStorage;
+
 }
 
 run();
+global['localStorage'] = localStorage;
