@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { BookService } from '../../../../services/services';
 import { BookResponse, PageResponseBookResponse } from '../../../../services/models';
-import { BookCardComponent } from "../../components/book-card/book-card.component";
+import { BookService } from '../../../../services/services';
+import { Router, RouterModule } from '@angular/router';
+import { BookCardComponent } from '../../components/book-card/book-card.component';
 
 @Component({
-  selector: 'app-book-list',
+  selector: 'app-my-books',
   standalone: true,
-  imports: [BookCardComponent],
-  templateUrl: './book-list.component.html',
-  styleUrl: './book-list.component.scss'
+  imports: [BookCardComponent,RouterModule],
+  templateUrl: './my-books.component.html',
+  styleUrl: './my-books.component.scss'
 })
-export class BookListComponent implements OnInit {
-
+export class MyBooksComponent implements OnInit {
 
   bookResponse:PageResponseBookResponse={}
   constructor(private router:Router,
@@ -21,8 +20,7 @@ export class BookListComponent implements OnInit {
    page=0;
    size=5;
    pages: any = [];
-   message = '';
-   level: 'success' |'error' = 'success';
+
   ngOnInit(): void {
 this.findAllBooks();
 console.log(this.findAllBooks);
@@ -31,7 +29,7 @@ console.log(this.bookResponse.totalPages);
 
   }
   findAllBooks() {
-    this.bookService.findAllBooks({
+    this.bookService.findAllBooksByOwner({
       page:this.page,
       size:this.size
     }).subscribe({
@@ -71,22 +69,28 @@ console.log(books);
     get isLastPage() {
       return this.page === this.bookResponse.totalPages as number - 1;
     }
-    displayBookDetails($event: BookResponse) {
-      throw new Error('Method not implemented.');
-      }
-      borrowBook(book: BookResponse) {
-        this.message=''
-        this.bookService.borrowBook({
-          'book-id':book.id as number
-        }).subscribe({
-          next:()=> {
-            this.level='success';
-            this.message="book succefuly add to your list"
-          },error: (err) => {
-            console.log(err);
-            this.level = 'error';
-            this.message = err.error.error;
-          }
-        })
-      }
+    archiveBook(book: BookResponse) {
+      this.bookService.updateArchivedStatus({
+        'book-id': book.id as number
+      }).subscribe({
+        next: () => {
+          book.archived = !book.archived;
+        }
+      });
+    }
+  
+    shareBook(book: BookResponse) {
+      this.bookService.updateShareableStatus({
+        'book-id': book.id as number
+      }).subscribe({
+        next: () => {
+          book.shareable = !book.shareable;
+        }
+      });
+    }
+  
+    editBook(book: BookResponse) {
+      this.router.navigate(['books', 'manage', book.id]);
+    }
+
 }

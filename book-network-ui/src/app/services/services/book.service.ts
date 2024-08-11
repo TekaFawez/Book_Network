@@ -8,6 +8,8 @@ import { map } from 'rxjs/operators';
 import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
+import { saveBook } from '../fn/book/save-book';
+import { SaveBook$Params } from '../fn/book/save-book';
 
 import { approveReturnBorrowBook } from '../fn/book/approve-return-borrow-book';
 import { ApproveReturnBorrowBook$Params } from '../fn/book/approve-return-borrow-book';
@@ -43,6 +45,31 @@ export class BookService extends BaseService {
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
   }
+   /** Path part for operation `saveBook()` */
+   static readonly SaveBookPath = '/books';
+
+   /**
+    * This method provides access to the full `HttpResponse`, allowing access to response headers.
+    * To access only the response body, use `saveBook()` instead.
+    *
+    * This method sends `application/json` and handles request body of type `application/json`.
+    */
+   saveBook$Response(params: SaveBook$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
+     return saveBook(this.http, this.rootUrl, params, context);
+   }
+ 
+   /**
+    * This method provides access only to the response body.
+    * To access the full response (for headers, for example), `saveBook$Response()` instead.
+    *
+    * This method sends `application/json` and handles request body of type `application/json`.
+    */
+   saveBook(params: SaveBook$Params, context?: HttpContext): Observable<number> {
+     return this.saveBook$Response(params, context).pipe(
+       map((r: StrictHttpResponse<number>): number => r.body)
+     );
+   }
+ 
 
   /** Path part for operation `postCollectionResourceBookPost1()` */
   static readonly PostCollectionResourceBookPost1Path = '/books';
