@@ -1,7 +1,7 @@
 
 <div class="rating">
-    @for(_ of [].constructor(fullStars);track _) {
-    <ng-container  let i = index>
+    @for(_ of [].constructor(fullStars);track $index; let i = $count) {
+    <ng-container >
       <i class="fas fa-star text-warning"></i>
     </ng-container>}
     @if(!hasHalfStar){
@@ -9,8 +9,8 @@
             <i class="fas fa-star-half-alt text-warning"></i>
           </ng-container>
     }
-    @for(_ of [].constructor(fullStars);track _) {
-    <ng-container  let i = index>
+    @for(_ of [].constructor(fullStars);track _;let i = $index) {
+    <ng-container  >
       <i class="far fa-star"></i>
     </ng-container>
 }

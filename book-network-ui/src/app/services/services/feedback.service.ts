@@ -30,6 +30,7 @@ export class FeedbackService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
+
   saveFeedback$Response(params: SaveFeedback$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
     return saveFeedback(this.http, this.rootUrl, params, context);
   }
@@ -38,7 +39,7 @@ export class FeedbackService extends BaseService {
    * This method provides access only to the response body.
    * To access the full response (for headers, for example), `saveFeedback$Response()` instead.
    *
-   * This method doesn't expect any request body.
+   * This method sends `application/json` and handles request body of type `application/json`.
    */
   saveFeedback(params: SaveFeedback$Params, context?: HttpContext): Observable<number> {
     return this.saveFeedback$Response(params, context).pipe(

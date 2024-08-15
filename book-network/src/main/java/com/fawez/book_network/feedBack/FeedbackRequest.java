@@ -11,7 +11,7 @@ public record FeedbackRequest (
                 @NotBlank(message = "203")
         String comment,
         @NotNull(message = "204")
-        @NotBlank(message = "205")
+
         Integer bookId
 
 ){

@@ -1,9 +1,25 @@
 import { Injectable } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenService {
+  isTokenNotValid():boolean {
+    const token=this.token;
+    if(!token){
+      return false
+    }
+    //decode jwt
+    const jwtHalper= new JwtHelperService()
+    //check expired
+    const isTokenExpired=jwtHalper.isTokenExpired(token)
+    if(isTokenExpired){
+      localStorage.clear();
+      return false
+    }
+    return true
+  }
   private isLocalStorageAvailable(): boolean {
     try {
       const test = '__localStorageTest__';

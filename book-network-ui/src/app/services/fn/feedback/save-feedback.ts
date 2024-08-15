@@ -15,8 +15,9 @@ export interface SaveFeedback$Params {
 export function saveFeedback(http: HttpClient, rootUrl: string, params: SaveFeedback$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
   const rb = new RequestBuilder(rootUrl, saveFeedback.PATH, 'post');
   if (params) {
-    rb.query('request', params.request, {});
+    rb.body(params.request, 'application/json');
   }
+
 
   return http.request(
     rb.build({ responseType: 'json', accept: 'application/hal+json', context })
