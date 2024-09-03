@@ -22,6 +22,8 @@ jobs :
         with:
           java-version: '17'
           distribution: 'corretto'
+      - name: Make mvnw executable
+        run: chmod +x book-network/mvnw
 
       - name: Compile project
         run: |
