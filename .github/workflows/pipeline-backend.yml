@@ -42,7 +42,7 @@ jobs :
           java-version: '17'
           distribution: 'corretto'
 
-      - name: Running Unit Tests
+      - name: Running Unit Testss
         run: |
           cd book-network
           ./mvnw clean test
