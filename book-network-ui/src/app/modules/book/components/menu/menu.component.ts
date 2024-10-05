@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { KeycloakService } from '../../../../services/keycloak/keycloak.service';
 
 @Component({
   selector: 'app-menu',
@@ -9,7 +10,7 @@ import { Router, RouterLink } from '@angular/router';
   styleUrl: './menu.component.scss'
 })
 export class MenuComponent implements OnInit {
-  constructor(){}
+  constructor( private keycloakService:KeycloakService){}
   ngOnInit(): void {
     
     if (typeof document !== 'undefined') {
@@ -28,9 +29,12 @@ export class MenuComponent implements OnInit {
     
     
   }
-logout() {
-localStorage.removeItem('token');
-window.location.reload();
+// logout() {
+// localStorage.removeItem('token');
+// window.location.reload();
+// }
+async logout() {
+ this.keycloakService.logout()
 }
 
 }

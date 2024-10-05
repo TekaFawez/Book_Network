@@ -2,6 +2,7 @@ import { HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpInterceptorFn
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TokenService } from '../token/token.service';
+import { KeycloakService } from '../keycloak/keycloak.service';
 
 // @Injectable()
 // export class HttpTokenInterceptor implements HttpInterceptor {
@@ -25,10 +26,14 @@ import { TokenService } from '../token/token.service';
 // }
 
 export const HttpTokenInterceptor: HttpInterceptorFn = (req, next) => {
-  const tokenService = inject(TokenService);
+ // const tokenService = inject(TokenService);
+
+  const keycloakService = inject(KeycloakService);
 
 
-  const authToken = tokenService.token
+  // const authToken = tokenService.token
+  const authToken = keycloakService.keycloak?.token
+
 
   const authReq = req.clone({
     setHeaders: {

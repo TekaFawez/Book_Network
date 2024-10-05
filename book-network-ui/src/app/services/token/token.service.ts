@@ -5,6 +5,23 @@ import { JwtHelperService } from '@auth0/angular-jwt';
   providedIn: 'root'
 })
 export class TokenService {
+  set token(token: string) {
+    if (this.isLocalStorageAvailable()) {
+      localStorage.setItem('token', token);
+    } else {
+      console.warn('LocalStorage is not available');
+    }
+  }
+
+  get token(): string | null {
+    if (this.isLocalStorageAvailable()) {
+      return localStorage.getItem('token');
+    } else {
+      console.warn('LocalStorage is not available'); 
+      return null;
+    }
+  }
+  
   isTokenNotValid():boolean {
     const token=this.token;
     if(!token){
@@ -31,22 +48,7 @@ export class TokenService {
     }
   }
 
-  set token(token: string) {
-    if (this.isLocalStorageAvailable()) {
-      localStorage.setItem('token', token);
-    } else {
-      console.warn('LocalStorage is not available');
-    }
-  }
 
-  get token(): string | null {
-    if (this.isLocalStorageAvailable()) {
-      return localStorage.getItem('token');
-    } else {
-      console.warn('LocalStorage is not available'); 
-      return null;
-    }
-  }
 
   removeToken(): void {
     if (this.isLocalStorageAvailable()) {
