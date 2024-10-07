@@ -14,10 +14,10 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   mail:
-    host: ${EMAIL_HOST_NAME}
+    host: localhost
     port: 465
-    username: ${EMAIL_USER_NAME}
-    password: ${EMAIL_PASSWORD}
+    username: fawez
+    password: fawez
     properties:
       mail:
         smtp:
@@ -29,11 +29,18 @@ spring:
         starttls:
           enabled: true
     protocol:  smtp
-application:
+
   security:
-    jwt:
-      secret-key: eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTcyMDcwMDE4MywiaWF0IjoxNzIwNzAwMTgzfQ.l4imijJhybizVPkpVtk1nXRqhmBGekkzLkrjKcld6Bs
-      expiration: 8640000
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: "http://localhost:9090/realms/book-social-network"
+
+application:
+#  security:
+#    jwt:
+#      secret-key: eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTcyMDcwMDE4MywiaWF0IjoxNzIwNzAwMTgzfQ.l4imijJhybizVPkpVtk1nXRqhmBGekkzLkrjKcld6Bs
+#      expiration: 8640000
   mailing:
     frontend:
       activation-url: http://localhost:4200/activate-account
@@ -42,5 +49,5 @@ application:
   file:
     uploads:
       photos-output-path: ./uploads
-server :
-  port : 8088
+server:
+  port: 8088
