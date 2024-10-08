@@ -8,7 +8,7 @@ import { UserProfile } from './user-profile';
 export class KeycloakService {
   private _keycloak :Keycloak|undefined
   private _profile:UserProfile|undefined
-
+  private _initialized = false;  // Flag to check initialization
 
 
   get keycloak() {
@@ -30,25 +30,32 @@ export class KeycloakService {
 
   constructor() { }
 
+ 
   async init() {
-  
+    if (this._initialized) {
+      // Prevent re-initialization
+      return;
+    }
 
-    if (this.keycloak) { 
+    if (this.keycloak) {
       const authenticate = await this.keycloak.init({
-        onLoad: 'login-required'
+        onLoad: 'login-required',
+        checkLoginIframe: false 
       });
-      if (authenticate) {
-        this._profile=(await this.keycloak.loadUserProfile()) as UserProfile;
-        this._profile.token=this.keycloak.token
 
+      if (authenticate) {
+        this._profile = (await this.keycloak.loadUserProfile()) as UserProfile;
+        this._profile.token = this.keycloak.token;
       }
-    } 
+    }
+    
+    this._initialized = true;  // Set the flag to true after initialization
   }
 
   login(){
     return this.keycloak?.login();
   }
   logout(){
-    return this.keycloak?.logout({redirectUri:'http:localhost:4200'});
+    return this.keycloak?.logout();
   }
 }

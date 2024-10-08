@@ -23,9 +23,9 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch()),
     KeycloakInitializerProvider, // Initializes Keycloak
     provideHttpClient(withInterceptors([HttpTokenInterceptor])),
-    importProvidersFrom(
-      ApiModule.forRoot({rootUrl: 'http://193.70.33.77:8088/api/v1'})
-    ),
+    // importProvidersFrom(
+    //   ApiModule.forRoot({rootUrl: 'http://193.70.33.77:8088/api/v1'})
+    // ),
 
   ],
 

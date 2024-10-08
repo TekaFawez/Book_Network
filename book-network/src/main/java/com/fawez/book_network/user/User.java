@@ -20,13 +20,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Entity
+//@Entity
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="_user")
-@EntityListeners(AuditingEntityListener.class)
+//@Table(name="_user")
+//EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails, Principal {
     @Id
     @GeneratedValue

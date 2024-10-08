@@ -28,9 +28,11 @@ public class FeedbackService {
         if(book.isArchived()||!book.isShareable()){
             throw new OperationNotPermittedException("you can not give a feedback since it archived or not shareable");
         }
-        User user = ((User) connectedUser.getPrincipal());
+//        User user = ((User) connectedUser.getPrincipal());
+//
+//        if(Objects.equals(book.getOwner().getId(),user.getId())){
+        if(Objects.equals(book.getCreatedBy(),connectedUser.getName())){
 
-        if(Objects.equals(book.getOwner().getId(),user.getId())){
             //throw an exception
             throw new OperationNotPermittedException("You cannot give feedback for your owen book");
         }
